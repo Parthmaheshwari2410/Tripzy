@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import StarRating from '../component/Hotels/StarRating'
 import { useCity } from '../context/CityContext'
 
-
-
 const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
@@ -17,8 +15,6 @@ const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
 
   )
 }
-
-
 const RadioButton = ({ label, selected = false, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
@@ -28,8 +24,6 @@ const RadioButton = ({ label, selected = false, onChange = () => { } }) => {
 
   )
 }
-
-
 
 
 const AllRooms = () => {
@@ -56,19 +50,16 @@ const AllRooms = () => {
 
   ];
 
-
   const { selectedCity } = useCity();
   const filteredRooms = selectedCity
     ? allData.filter((room) => room.city.toLowerCase() === selectedCity)
     : allData;
 
-
-
   return (
     <div className='flex flex-col-reverse lg:flex-row items-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32 '>
       <div>
         <div className='flex flex-col items-start text-left'>
-          <h1 className='font-playfair text-4xl md:text-[40px]'>All Rooms</h1>
+          <h1 className='font-playfair text-4xl md:text-[40px]'>All Hotels</h1>
           <p className='text-sm md:text-base text-gray-500/90 mt-2 max-w-174'>Take advantage of our limited-time offers and special packages to enhance your stay and create unforgettable memories.</p>
         </div>
         {filteredRooms.map((room) => (
@@ -130,12 +121,8 @@ const AllRooms = () => {
               <RadioButton key={index} label={option} />
             ))}
           </div>
-         
         </div>
-
-
       </div>
-
     </div>
   )
 }

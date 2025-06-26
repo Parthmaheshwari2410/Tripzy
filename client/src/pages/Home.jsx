@@ -6,18 +6,20 @@ import Testimonial from '../component/Mains/Testimonial'
 import TopRestaurents from '../component/restarents/TopRestaurents'
 import TopHotels from '../component/Hotels/TopHotels'
 import ExclusiveOffers from '../component/Mains/ExclusiveOffers'
+import Topplace from '../component/Flights/Topplace'
 
 
 const Home = () => {
   return (
     <>
-        <Hero/>
-       <TopHotels/>
-        <TopRestaurents/>
-        <ExclusiveOffers/>
-        <Testimonial/>
-      
-        
+      <Hero />
+      <Topplace />
+      <TopHotels />
+      <TopRestaurents />
+      <ExclusiveOffers />
+      <Testimonial />
+
+
     </>
   )
 }

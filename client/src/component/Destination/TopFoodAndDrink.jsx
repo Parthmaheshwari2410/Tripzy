@@ -13,7 +13,7 @@ import { useCity } from '../../context/CityContext'
  const TopFoodAndDrink = () => {
    const navigate = useNavigate()
    const { selectedCity } = useCity();
-    const filteredRooms = selectedCity
+    const filteredRestaurent = selectedCity
       ? allData.filter((menu) => menu.city.toLowerCase() === selectedCity)
       : allData;
 
@@ -35,7 +35,7 @@ import { useCity } from '../../context/CityContext'
   </div>
 
   <div className='flex flex-wrap items-center justify-center gap-6 mt-0'>
-    {filteredRooms.slice(0, 6).map((menu, index) => (
+    {filteredRestaurent.slice(0, 6).map((menu, index) => (
       <FoodAndDrink key={menu._id} room={menu} index={menu} />
     ))}
   </div>
