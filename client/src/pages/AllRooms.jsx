@@ -1,12 +1,11 @@
 
-
 import React, { useState } from 'react'
 import { allData, assets, facilityIcons } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
 import StarRating from '../component/Hotels/StarRating'
 import { useCity } from '../context/CityContext'
 
-const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
+const CheckBox = ({ label, selected = true, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
       <input type="checkbox" checked={selected} onChange={(e) => onChange(e.target.checked, label)} />
@@ -15,7 +14,7 @@ const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
 
   )
 }
-const RadioButton = ({ label, selected = false, onChange = () => { } }) => {
+const RadioButton = ({ label, selected = true, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
       <input type="radio" name="sortOption" checked={selected} onChange={(e) => onChange(label)} />

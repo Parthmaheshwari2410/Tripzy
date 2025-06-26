@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import StarRating from '../component/Hotels/StarRating'
 import { useCity } from '../context/CityContext'
 
-const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
+const CheckBox = ({ label, selected = true, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
       <input type="checkbox" checked={selected} onChange={(e) => onChange(e.target.checked, label)} />
@@ -14,7 +14,7 @@ const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
 }
 
 
-const RadioButton = ({ label, selected = false, onChange = () => { } }) => {
+const RadioButton = ({ label, selected = true, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
       <input type="radio" name="sortOption" checked={selected} onChange={(e) => onChange(label)} />
@@ -82,22 +82,14 @@ const AllRestarents = () => {
             ))}
           </div>
         </div>
-
-
-
-
       </div>
-
       <div className='w-full lg:w-3/4'>
-
         <div className='flex flex-col items-start text-left mb-10'>
           <h1 className='font-playfair text-4xl md:text-[40px]'>All Restaurents</h1>
           <p className='text-sm md:text-base text-gray-500/90 mt-2 max-w-174'>
             Take advantage of our limited-time offers and special packages to enhance your stay and create unforgettable memories.
           </p>
         </div>
-
-
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {filteredRestarents.map((menu) => (
             <div key={menu._id} className='flex flex-col rounded-xl overflow-hidden shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300'>
