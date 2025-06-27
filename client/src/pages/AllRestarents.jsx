@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import StarRating from '../component/Hotels/StarRating'
 import { useCity } from '../context/CityContext'
 
-const CheckBox = ({ label, selected = true, onChange = () => { } }) => {
+
+const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
       <input type="checkbox" checked={selected} onChange={(e) => onChange(e.target.checked, label)} />
@@ -25,7 +26,8 @@ const RadioButton = ({ label, selected = true, onChange = () => { } }) => {
 const AllRestarents = () => {
   const navigate = useNavigate()
   const [openFilters, setOpenFilters] = useState(false);
-
+  const [selectedMenuTypes, setSelectedMenuTypes] = useState([]);
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const menuTypes = [
     "Italian",
     "Mexican",
@@ -44,6 +46,26 @@ const AllRestarents = () => {
     "Newest First",
   ];
 
+  const handleMenuTypeChange = (checked, label) => {
+    if (checked) {
+      setSelectedMenuTypes(prev => [...prev, label]);
+    } else {
+      setSelectedMenuTypes(prev => prev.filter(item => item !== label));
+    }
+  };
+
+  const handlePriceRangeChange = (checked, label) => {
+    if (checked) {
+      setSelectedPriceRanges(prev => [...prev, label]);
+    } else {
+      setSelectedPriceRanges(prev => prev.filter(item => item !== label));
+    }
+  };
+
+  const clearAllFilters = () => {
+    setSelectedMenuTypes([]);
+    setSelectedPriceRanges([]);
+  };
   const { selectedCity } = useCity();
   const filteredRestarents = selectedCity
     ? allData.filter((menu) => menu.city.toLowerCase() === selectedCity)
@@ -58,7 +80,7 @@ const AllRestarents = () => {
             <span onClick={() => { setOpenFilters(!openFilters) }} className='lg:hidden'>
               {openFilters ? "HiDE" : "SHOW"}
             </span>
-            <span className='hidden lg:block'>CLEAR</span>
+            <span onClick={clearAllFilters} className='hidden lg:block'>CLEAR</span>
           </div>
         </div>
 
@@ -66,13 +88,17 @@ const AllRestarents = () => {
           <div className='px-5 pt-5'>
             <p className='font-medium text-gray-800 pb-2'>Popular filters</p>
             {menuTypes.map((menu, index) => (
-              <CheckBox key={index} label={menu} />
+              <CheckBox key={index} label={menu}
+                selected={selectedMenuTypes.includes(menu)}
+                onChange={handleMenuTypeChange} />
             ))}
           </div>
           <div className='px-5 pt-5'>
             <p className='font-medium text-gray-800 pb-2'>Price Range</p>
             {priceRanges.map((range, index) => (
-              <CheckBox key={index} label={`$ ${range}`} />
+              <CheckBox key={index} label={`$ ${range}`}
+                selected={selectedPriceRanges.includes(`$ ${range}`)}
+                onChange={handlePriceRangeChange} />
             ))}
           </div>
           <div className='px-5 pt-5 pb-7'>
