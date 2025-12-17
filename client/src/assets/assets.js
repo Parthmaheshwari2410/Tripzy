@@ -2211,7 +2211,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 8500,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["heritage", "roomService", "concierge"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
@@ -2261,7 +2261,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 12000,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["butler", "diplomatic", "concierge"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
@@ -2361,7 +2361,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 5800,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["meditation", "spiritual", "peaceful"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
@@ -2411,7 +2411,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 7200,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["business", "airport", "corporate"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
@@ -2461,7 +2461,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 6500,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["academic", "cultural", "library"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
@@ -2511,7 +2511,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 5500,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["garden", "wellness", "organic"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
