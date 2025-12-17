@@ -10,6 +10,7 @@ const TopHotels = () => {
 
     return (
         <div className="flex flex-col items-center px-6 md:px-16 lg:px-24 bg-slate-50 py-20">
+
             <Title
                 title="Top Hotels"
                 subTitle="Take advantage of our limited-time offers and special packages to enhance your stay and create unforgettable memories."

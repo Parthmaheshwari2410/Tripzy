@@ -17,7 +17,6 @@ const Topplace = () => {
 
     return (
         <div className="flex flex-col items-center px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 bg-slate-50 py-8 sm:py-10 lg:py-12">
-            {/* <div className="w-full flex justify-between items-center mb-6 sm:mb-8"> */}
             <div className="flex flex-col items-center px-6 md:px-16 lg:px-24 bg-slate-50 py-20">
                 <Title title="Top Attractions" />
             </div>
