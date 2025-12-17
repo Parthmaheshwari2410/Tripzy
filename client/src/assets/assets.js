@@ -2311,7 +2311,7 @@ export const allData = [
     "diningType": "Dine-In && Takeaway",
     "pricePerNight": 4200,
     "amenities": ["Room Service", "Mountain View", "Pool Access"],
-    "amenitie": ["shopping", "foodTour", "cultural"],
+    "amenitie": ["restaurantMenu", "restaurentWaiter", "restaurantEat"],
     "isAvailable": true,
     "__v": 0
   },
