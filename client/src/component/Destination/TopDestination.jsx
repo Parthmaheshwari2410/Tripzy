@@ -12,7 +12,7 @@ const TopDestination = () => {
 
   return (
     <div className='flex flex-col items-center px-4 sm:px-6 md:px-12 lg:px-16 xl:px-24 bg-slate-50 py-8 sm:py-10 lg:py-12'>
-      <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+      <div className="w-full flex flex-col sm:flex-row justify-between  items-start sm:items-center mb-6 sm:mb-8 gap-4">
         <Title title="Things to do" />
       </div>
 
