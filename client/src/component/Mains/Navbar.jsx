@@ -15,7 +15,7 @@ const Navbar = () => {
         { name: 'Home', path: '/' },
         { name: 'Hotels', path: '/rooms' },
         { name: 'Flights', path: '/flights' },
-        { name: 'Restaurents', path: '/restarents' },
+        { name: 'Restaurants', path: '/restarents' },
         { name: 'Destinations', path: '/destinations' },
     ];
 

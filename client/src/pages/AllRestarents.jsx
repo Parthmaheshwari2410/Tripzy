@@ -1,151 +1,224 @@
 import React, { useState } from 'react'
-import { allData, assets, facilityIcons } from '../assets/assets.js'
+import { allData, assets, faciIcons, facilityIcons } from '../assets/assets.js'
 import { useNavigate } from 'react-router-dom'
 import StarRating from '../component/Hotels/StarRating.jsx'
 import { useCity } from '../context/CityContext.jsx'
 
+const CheckBox = ({ label, selected = false, onChange = () => { } }) => (
+  <label className="flex gap-2 items-center cursor-pointer mt-1 text-sm">
+    <input
+      type="checkbox"
+      checked={selected}
+      onChange={(e) => onChange(e.target.checked, label)}
+    />
+    <span className="font-light select-none">{label}</span>
+  </label>
+)
 
-const CheckBox = ({ label, selected = false, onChange = () => { } }) => {
-  return (
-    <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
-      <input type="checkbox" checked={selected} onChange={(e) => onChange(e.target.checked, label)} />
-      <span className='font-light select-none'>{label}</span>
-    </label>
-  )
+const RadioButton = ({ label, selected, onChange }) => (
+  <label className="flex gap-2 items-center cursor-pointer mt-1 text-sm">
+    <input
+      type="radio"
+      name="sortOption"
+      checked={selected}
+      onChange={() => onChange(label)}
+    />
+    <span className="font-light select-none">{label}</span>
+  </label>
+)
+
+
+const getPriceNumber = (price) => {
+  if (!price) return 0
+  return Number(price.toString().replace(/[^0-9]/g, ''))
 }
 
-
-const RadioButton = ({ label, selected = true, onChange = () => { } }) => {
-  return (
-    <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
-      <input type="radio" name="sortOption" checked={selected} onChange={(e) => onChange(label)} />
-      <span className='font-light select-none'>{label}</span>
-    </label>
-  )
-}
 const AllRestarents = () => {
   const navigate = useNavigate()
-  const [openFilters, setOpenFilters] = useState(false);
-  const [selectedMenuTypes, setSelectedMenuTypes] = useState([]);
-  const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
-  const menuTypes = [
-    "Italian",
-    "Mexican",
-    "Chinese",
-    "American",
-  ];
-  const priceRanges = [
-    '0 to 500',
-    '500 to 1000',
-    '1000 to 1500',
-    '1500 to 2000',
-  ];
-  const sortOperations = [
-    "Price Low to High",
-    "Price High to Low",
-    "Newest First",
-  ];
+  const { selectedCity } = useCity()
+
+  const [selectedMenuTypes, setSelectedMenuTypes] = useState([])
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState([])
+  const [selectedSort, setSelectedSort] = useState('')
+
+  const menuTypes = ['Italian', 'Mexican', 'Chinese', 'American']
+  const priceRanges = ['0 to 500', '500 to 1000', '1000 to 1500', '1500 to 2000']
+  const sortOptions = ['Price Low to High', 'Price High to Low']
+
 
   const handleMenuTypeChange = (checked, label) => {
-    if (checked) {
-      setSelectedMenuTypes(prev => [...prev, label]);
-    } else {
-      setSelectedMenuTypes(prev => prev.filter(item => item !== label));
-    }
-  };
+    setSelectedMenuTypes((prev) =>
+      checked ? [...prev, label] : prev.filter((item) => item !== label)
+    )
+  }
 
   const handlePriceRangeChange = (checked, label) => {
-    if (checked) {
-      setSelectedPriceRanges(prev => [...prev, label]);
-    } else {
-      setSelectedPriceRanges(prev => prev.filter(item => item !== label));
-    }
-  };
+    setSelectedPriceRanges((prev) =>
+      checked ? [...prev, label] : prev.filter((item) => item !== label)
+    )
+  }
+
+  const handleSortChange = (label) => {
+    setSelectedSort(label)
+  }
 
   const clearAllFilters = () => {
-    setSelectedMenuTypes([]);
-    setSelectedPriceRanges([]);
-  };
-  const { selectedCity } = useCity();
-  const filteredRestarents = selectedCity
-    ? allData.filter((menu) => menu.city.toLowerCase() === selectedCity)
-    : allData;
+    setSelectedMenuTypes([])
+    setSelectedPriceRanges([])
+    setSelectedSort('')
+  }
+
+  let filteredRestarents = allData.filter((menu) => {
+    if (
+      selectedCity &&
+      menu.city?.toLowerCase() !== selectedCity.toLowerCase()
+    ) {
+      return false
+    }
+
+    if (
+      selectedMenuTypes.length > 0 &&
+      !selectedMenuTypes.includes(menu.category)
+    ) {
+      return false
+    }
+
+    if (selectedPriceRanges.length > 0) {
+      const price = getPriceNumber(menu.restarentsPrices)
+      const match = selectedPriceRanges.some((range) => {
+        const [min, max] = range.split(' to ').map(Number)
+        return price >= min && price <= max
+      })
+      if (!match) return false
+    }
+
+    return true
+  })
+
+  if (selectedSort === 'Price Low to High') {
+    filteredRestarents.sort(
+      (a, b) =>
+        getPriceNumber(a.restarentsPrices) -
+        getPriceNumber(b.restarentsPrices)
+    )
+  }
+
+  if (selectedSort === 'Price High to Low') {
+    filteredRestarents.sort(
+      (a, b) =>
+        getPriceNumber(b.restarentsPrices) -
+        getPriceNumber(a.restarentsPrices)
+    )
+  }
 
   return (
-    <div className='flex flex-col-reverse lg:flex-row items-start justify-between pt-28 md:pt-35 px-4 md:px-16 lg:px-24 xl:px-32 lg:mb-10 '>
-      <div className='bg-white w-full lg:w-80 border border-gray-300 text-gray-600 max-lg:mb-8 min-lg:mt-16 lg:mr-10'>
-        <div className={`flex items-center justify-between px-5 py-2.5 min-lg:border-b border-gray-300 ${openFilters && "border-b"}`}>
-          <p className="text-base font-medium text-gray-800">FILTERS</p>
-          <div className='text-xs cursor-pointer'>
-            <span onClick={() => { setOpenFilters(!openFilters) }} className='lg:hidden'>
-              {openFilters ? "HiDE" : "SHOW"}
-            </span>
-            <span onClick={clearAllFilters} className='hidden lg:block'>CLEAR</span>
-          </div>
+    <div className="flex flex-col-reverse lg:flex-row pt-28 px-6 pb-12">
+
+      <div className="w-full lg:w-64 bg-white border border-gray-300 mb-6 lg:mb-0 lg:mr-6 rounded-lg lg:max-h-[75vh] overflow-y-auto">
+        <div className="flex justify-between px-4 py-2 border-b">
+          <p className="font-medium text-sm">FILTERS</p>
+          <span
+            onClick={clearAllFilters}
+            className="cursor-pointer text-xs font-medium"
+          >
+            CLEAR
+          </span>
         </div>
 
-        <div className={`${openFilters ? 'h-auto' : 'h-0 lg:h-auto'} overflow-hidden transition-all duration-700`}>
-          <div className='px-5 pt-5'>
-            <p className='font-medium text-gray-800 pb-2'>Popular filters</p>
-            {menuTypes.map((menu, index) => (
-              <CheckBox key={index} label={menu}
-                selected={selectedMenuTypes.includes(menu)}
-                onChange={handleMenuTypeChange} />
-            ))}
-          </div>
-          <div className='px-5 pt-5'>
-            <p className='font-medium text-gray-800 pb-2'>Price Range</p>
-            {priceRanges.map((range, index) => (
-              <CheckBox key={index} label={`$ ${range}`}
-                selected={selectedPriceRanges.includes(`$ ${range}`)}
-                onChange={handlePriceRangeChange} />
-            ))}
-          </div>
-          <div className='px-5 pt-5 pb-7'>
-            <p className='font-medium text-gray-800 pb-2'>Sort By</p>
-            {sortOperations.map((option, index) => (
-              <RadioButton key={index} label={option} />
-            ))}
-          </div>
+        <div className="px-4 py-3">
+          <p className="font-medium mb-1 text-sm">Cuisine</p>
+          {menuTypes.map((menu) => (
+            <CheckBox
+              key={menu}
+              label={menu}
+              selected={selectedMenuTypes.includes(menu)}
+              onChange={handleMenuTypeChange}
+            />
+          ))}
+        </div>
+
+        <div className="px-4 py-3">
+          <p className="font-medium mb-1 text-sm">Price Range</p>
+          {priceRanges.map((range) => (
+            <CheckBox
+              key={range}
+              label={range}
+              selected={selectedPriceRanges.includes(range)}
+              onChange={handlePriceRangeChange}
+            />
+          ))}
+        </div>
+
+        <div className="px-4 py-3">
+          <p className="font-medium mb-2 text-sm">Sort By</p>
+          {sortOptions.map((option) => (
+            <RadioButton
+              key={option}
+              label={option}
+              selected={selectedSort === option}
+              onChange={handleSortChange}
+            />
+          ))}
         </div>
       </div>
-      <div className='w-full lg:w-3/4'>
-        <div className='flex flex-col items-start text-left mb-10'>
-          <h1 className='font-playfair text-4xl md:text-[40px]'>All Restaurents</h1>
-          <p className='text-sm md:text-base text-gray-500/90 mt-2 max-w-174'>
-            Take advantage of our limited-time offers and special packages to enhance your stay and create unforgettable memories.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {filteredRestarents.map((menu) => (
-            <div key={menu._id} className='flex flex-col rounded-xl overflow-hidden shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300'>
-              <img onClick={() => { navigate(`/restarents/${menu._id}`); scrollTo(0, 0); }} src={menu.restarentsImages}
-                alt="restaurant-img" title='View Room Details' className='h-48 w-full object-cover cursor-pointer' />
-              <div className='p-4 flex flex-col gap-2'>
-                <p className='text-gray-500 text-sm'>{menu.city}</p>
+
+      <div className="w-full lg:flex-1">
+        <h1 className="font-playfair text-4xl mb-6">All Restaurants</h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredRestarents.map((menu, index) => (
+            <div
+              key={`${menu._id}-${index}`}
+              className="rounded-xl bg-white shadow-md overflow-hidden"
+            >
+              <img
+                src={menu.restarentsImages}
+                alt={menu.restarentsName}
+                onClick={() => {
+                  navigate(`/restarents/${menu._id}`)
+                  window.scrollTo(0, 0)
+                }}
+                className="h-56 w-full object-cover cursor-pointer hover:scale-110 transition"
+              />
+
+              <div className="p-4 flex flex-col gap-2">
+                <p className="text-gray-500 text-sm">{menu.city}</p>
+
                 <p
-                  onClick={() => { navigate(`/restarents/${menu._id}`); scrollTo(0, 0); }}
-                  className='text-gray-800 text-xl font-playfair cursor-pointer hover:text-indigo-600'
-                >
+                  onClick={() => {
+                    className = "text-xl font-playfair cursor-pointer hover:text-indigo-600"
+                    const uniqueId = `${menu._id}-${index}`;
+                    navigate(`/restarents/${uniqueId}`);
+                    scrollTo(0, 0)
+                  }}>
                   {menu.restarentsName}
                 </p>
-                <div className='flex items-center'>
-                  <StarRating />
-                  <p className='ml-2 text-sm text-gray-600'>200+ Reviews</p>
+
+                <div className="flex items-center">
+                  <StarRating rating={menu.ratinggg || 4} />
+                  <span className="ml-2 text-sm">200+ Reviews</span>
                 </div>
-                <div className='flex items-center gap-2 text-gray-500 mt-1 text-sm'>
-                  <img src={assets.locationIcon} alt="location-icon" className='w-4 h-4' />
-                  <span>{menu.address}</span>
+
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {Array.isArray(menu.amenitie) &&
+                    menu.amenitie.map((item, i) => (
+                      <div
+                        key={`${item}-${i}`}
+                        className="flex items-center gap-1 px-2 py-1 bg-[#F5F5FF]/70 rounded text-xs"
+                      >
+                        <img
+                          src={faciIcons[item]}
+                          alt={item}
+                          className="w-3 h-3"
+                        />
+                        {item}
+                      </div>
+                    ))}
                 </div>
-                <div className="flex flex-wrap items-center mt-3 mb-2 gap-2">
-                  {menu.amenitie.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[#F5F5FF]/70 text-xs">
-                      <img src={facilityIcons[item]} alt={item} className='w-4 h-4' />
-                      <p>{item}</p>
-                    </div>
-                  ))}
-                </div>
-                <p className='text-base font-semibold text-gray-800 mt-auto'>{menu.restarentsPrices}</p>
+
+                <p className="text-lg font-semibold mt-auto">
+                  {menu.restarentsPrices}
+                </p>
               </div>
             </div>
           ))}
@@ -154,4 +227,5 @@ const AllRestarents = () => {
     </div>
   )
 }
+
 export default AllRestarents

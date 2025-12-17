@@ -9,25 +9,29 @@ import Footer from './component/Mains/Footer.jsx';
 import AllRestarents from './pages/AllRestarents.jsx';
 import DestinationPage from './component/Destination/DestinationPage.jsx';
 import Flights from './component/Flights/Flights.jsx';
-
+import RoomDetails from './pages/RoomDetails.jsx';
+import RestaurentDetails from './pages/RestaurentDetails.jsx';
 
 const App = () => {
-
   const isOwnerPath = useLocation().pathname.includes("owner");
+
   return (
-    <div>
+    <div className='min-h-screen flex flex-col'>
       {!isOwnerPath && <Navbar />}
-      <div className='min-h-[70vh]'>
+
+      <div className='flex-1 min-h-[70vh]'>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/rooms' element={<AllRooms />} />
+          <Route path='/rooms/:id' element={<RoomDetails />} />
+          <Route path='/restarents/:id' element={<RestaurentDetails />} />
           <Route path='/restarents' element={<AllRestarents />} />
           <Route path='/destinations' element={<DestinationPage />} />
           <Route path='/flights' element={<Flights />} />
-
         </Routes>
       </div>
-      <Footer />
+
+      {!isOwnerPath && <Footer />}
     </div>
   )
 }

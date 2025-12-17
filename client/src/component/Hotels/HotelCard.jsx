@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom'
 import { assets } from '../../assets/assets'
 
 const HotelCard = ({ room, index }) => {
+  const uniqueId = `${room._id}-${index}`;
   return (
-    <Link to={'/rooms/' + room._id} onClick={() => scrollTo(0, 0)} key={room._id}
+
+    <Link
+      to={`/rooms/${uniqueId}`}
+      key={room._id} onClick={() => scrollTo(0, 0)}
       className='relative max-w-70 w-full rounded-xl overflow-hidden bg-white text-gray-500/90 shadow-[0px_4px_4px_rgba(0,0,0,0.05)] '>
       <img src={room.hotelImage} alt="" />
-
       {index % 2 === 0 && <p className='px-3 py-1 absolute top-3 left-3 text-xs bg-white text-gray-800 font-medium rounded-full'>Best Saller</p>}
       <svg
         width="20"
@@ -41,6 +44,7 @@ const HotelCard = ({ room, index }) => {
         </div>
         <div className='flex items-center justify-between mt-4'>
           <p><span className='text-xl text-gray-800'>{room.hotelPrice}</span></p>
+
           <button className='px-4 py-2 text-sm font-medium border border-gray-300 rounded hover:bg-gray-50 transition-all cursor-pointer'>Book Now</button>
         </div>
       </div>

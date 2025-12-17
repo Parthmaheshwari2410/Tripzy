@@ -2,6 +2,7 @@
 @import "tailwindcss";
 
 @theme {
+  --color-primary: #2563eb; 
   --color-secondary: #FBBF24;
   --color-brandRed: #e50829,
     --stroke-brandRed: #e50829,
